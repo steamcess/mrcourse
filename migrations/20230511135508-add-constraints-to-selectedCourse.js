@@ -13,21 +13,10 @@ module.exports = {
       },
       onDelete: 'cascade',
       onUpdate: 'cascade'
-    },
-    {
-      fields: ['CourseId'],
-      type: "foreign key",
-      name: 'fkeyCourseId',
-      references: {
-        table: 'Courses',
-        fields: ['id']
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade'
     });
   },
 
   down: function(queryInterface, Sequelize) {
-    return queryInterface.removeConstraint('UserProfiles', ['fkeyUserProfileId', 'fkeyCourseId' ]);
+    return queryInterface.removeConstraint('SelectedCourses', 'fkeyUserProfileId');
   }
 };
