@@ -1,6 +1,9 @@
 <%- include ("partials/header") -%>
 
-<h3>Catalogue Courses</h3>
+<a href="/dashboard/students"><button>Back</button></a><br><br>
+
+
+<h3>List <%= result.title %> Course</h3>
 <br>
 <br>
 <table border="2">
@@ -9,20 +12,18 @@
             <th>No</th>
             <th>Course Name</th>
             <th>Price</th>
-            <th>Teacher</th>
             <th>Action</th>
         </tr>
     </thead>
 
     <tbody>
-        <% courses.forEach((el, index) => { %>
+        <% result.SelectedCourses.forEach((el, index) => { %>
             <tr>
                 <td><%= index + 1 %></td>
-                <td><%= el.courseName %></td>
-                <td><%= changeFormat(el.price)  %></td>
-                <td><%= el.teacher  %></td>
+                <td><%= el.Course.courseName %></td>
+                <td><%= changeFormat(el.Course.price)  %></td>
                 <td>
-                    <a href="/courseDetail/<%= el.id %>"><button>See Detail Courses</button></a>
+                    <a href="/delete/<%= el.Course.id %>"><button>Finish</button></a>
                 </td>
             </tr>
         <% }) %>

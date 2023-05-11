@@ -1,0 +1,30 @@
+[
+    {
+        "courseName": "Accounting 101",
+        "description": "This course is about learning AR/AP from scratch.",
+        "courseRating": 4,
+        "teacher" : "Mr. Bambang",
+        "price": 130000
+    },
+    {
+        "courseName": "Operations 101",
+        "description": "This course is about learning supply chain from scratch.",
+        "courseRating": 5,
+        "teacher" : "Mr. Budi",
+        "price": 150000
+    },
+    {
+        "courseName": "Digital Marketing 101",
+        "description": "This course is about learning digital marketing from scratch.",
+        "courseRating": 5,
+        "teacher" : "Mrs. Angeline",
+        "price": 180000
+    },
+    {
+        "courseName": "HR 101",
+        "description": "This course is about learning HR from scratch.",
+        "courseRating": 5,
+        "teacher" : "Mr. Tom Hanks",
+        "price": 200000
+    }
+]

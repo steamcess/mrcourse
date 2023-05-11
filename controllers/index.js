@@ -1,38 +1,171 @@
-const { User, UserProfile } = require("../models")
+const { SelectedCourse, Course, Category, User, UserProfile } = require("../models")
 const { Op } = require('sequelize') // untuk sort filter
 const bcrypt = require('bcrypt');
+const {changeFormat} = require('../helpers/changeNumberFormat')
 
 
 class Controller {
 
+  static buy (req, res) {
+    const {CourseId} = req.params;
+    // console.log(CourseId)
+    let a = req.session.username;
+    let UserProfileId;
+    UserProfile.findOne({ where: { username: a }})
+      .then(user => {
+        UserProfileId = user.id
+        return SelectedCourse.create({CourseId, UserProfileId})
+      })
+      .then(() =>{
+        res.redirect(`/students/courses`)
+      })
+      .catch(err =>{
+        console.log(err)
+        res.send(err)
+    })
+  }
+
+  static delete (req, res) {
+    const {CourseId} = req.params;
+    // console.log(CourseId)
+    let a = req.session.username;
+    console.log(a)
+    let UserProfileId;
+    UserProfile.findOne({ where: { username: a }})
+      .then(user => {
+        UserProfileId = user.id
+        return SelectedCourse.destroy({ where: { CourseId: CourseId, UserProfileId: UserProfileId }})
+      })
+      .then((result) =>{
+        // res.send(result)
+        res.redirect(`/students/courses`)
+      })
+      .catch(err =>{
+        console.log(err)
+        res.send(err)
+    })
+  }
+
+  static studentCourses(req, res){
+    const {UserProfileId} = req.params;
+    let a = req.session.username;
+    UserProfile.findOne({
+      where: {username: a},  include: {
+        model: SelectedCourse,
+        include: Course
+      }
+    })
+    .then(result =>{
+      res.render("list-studentCourse", {result, changeFormat})
+    })
+    .catch(err =>{
+      console.log(err)
+  })
+  }
+
+  static dashboardStud (req, res) {
+    let whereOption = Course.getCourseByCourseName(req.query)
+
+    // const searchOption = req.query.courseName || 'all'
+    // let whereOption = {}
+
+    // if (searchOption !== 'all') {
+    //   whereOption = {
+    //     '$courseName$': { [Op.like]: `%${searchOption}%` },
+    //   };
+    // }
+
+    Course.findAll({where: whereOption})
+    .then(courses =>{
+        // res.send(courses)
+        res.render("dashboardStudents", {courses, changeFormat})
+    })
+    .catch(err =>{
+        console.log(err)
+    })
+  }
+
+  static dashboardTeach (req, res) {
+    UserProfile.findAll({
+      include: {
+        model: SelectedCourse,
+        include: Course
+      }
+    })
+    .then(bulkData =>{
+      res.render("dashboardTeach", {bulkData})
+    })
+    .catch(err =>{
+      console.log(err)
+  })
+  }
+
+  static getCourses(req, res){
+    UserProfile.findAll({
+      include: {
+        model: SelectedCourse,
+        include: Course
+      }
+    })
+    .then(result =>{
+      res.send(result)
+    })
+    .catch(err =>{
+      console.log(err)
+  })
+  }
+
+  // static studentCourses(req, res){
+  //   SelectedCourse.create(){
+
+  //   }
+  // }
+
+
+
   static home (req, res) {
-    res.render("home")
+    Course.findAll()
+    .then(courses =>{
+        // res.send(courses)
+        res.render("home", {courses, changeFormat})
+    })
+    .catch(err =>{
+        console.log(err)
+    })
+  }
+
+  static courseDetail(req, res){
+    // let a = req.session.username;
+    // console.log(a)
+    const {id} = req.params
+    Course.findByPk(id)
+    .then(course => {
+      // res.send(course)
+      res.render("courseDetail", {course, changeFormat})
+    })
+    .catch(err =>{
+      res.send(err)
+  })
   }
 
   static dashboard (req, res) {
-    res.render("dashboard")
+    UserProfile.findAll({
+      include: {
+        model: SelectedCourse,
+        include: Course
+      }
+    })
+    .then(bulkData =>{
+      res.render("dashboard", {bulkData, changeFormat})
+    })
+    .catch(err =>{
+      console.log(err)
+  })
   }
 
   static loginGet (req, res) {
     res.render("login")
   }
-
-  // static loginPost (req, res) {
-  //   let {username, password} = req.body
-  //
-  //   User.findOne({ username: username })
-  //     .then(user => {
-  //       console.log(user)
-  //       if (user.password === password) {
-  //         res.send('cocok')
-  //       } else {
-  //         res.send('password salah')
-  //       }
-  //     })
-  //     .catch(err => {
-  //       res.send(err);
-  //     });
-  // }
 
   static loginPost (req, res) {
     let {username, password} = req.body
@@ -54,9 +187,14 @@ class Controller {
           .then((result) => {
             if (result) {
               req.session.username = user.username
+              if (user.role === "student") {
+                res.redirect("/dashboard/students")
+              } else {
+                res.redirect("/dashboard/teachers")
+              }
 
-              console.log('Password matched! COCOK COCOK');
-              res.redirect("/regProfiles")
+              // console.log('Password matched! COCOK COCOK');
+              // res.redirect("/regProfiles")
             } else {
               console.log('Password did not match!');
               res.redirect("/login")
@@ -76,55 +214,6 @@ class Controller {
   static regGet (req, res) {
     res.render("reg")
   }
-
-  // static regPost (req, res) {
-  //   let {username, password} = req.body;
-  //
-  //   User.findOne({username: username})
-  //     .then(user => {
-  //       console.log(user, '<<<< ini user Baru Reg')
-  //       if (user) {
-  //         res.send("Username already exists");
-  //       } else {
-  //         // Hash password before saving user to the database
-  //         bcrypt.genSalt(10, function(err, salt) {
-  //           bcrypt.hash(password, salt, function(err, hash) {
-  //             if (err) throw err;
-  //
-  //             let newUser = new User({
-  //               username: username,
-  //               password: hash
-  //             });
-  //
-  //             newUser.save()
-  //               .then(() => {
-  //                 res.redirect('/masuk');
-  //               })
-  //               .catch(err => {
-  //                 res.send(err);
-  //               });
-  //           });
-  //         });
-  //       }
-  //     })
-  //     .catch(err => {
-  //       res.send(err);
-  //     });
-  // }
-
-  // static regPost (req, res) {
-  //   let {username, password} = req.body;
-  //
-  //   let newUser = {username, password}
-  //
-  //   User.create(newUser)
-  //     .then(() => {
-  //       res.redirect("/")
-  //     })
-  //     .catch(err => {
-  //       res.send(err)
-  //     })
-  // }
 
   static regPost(req, res) {
     let { username, password, role } = req.body;
@@ -169,10 +258,15 @@ class Controller {
 
     UserProfile.create(newUserProfiles)
       .then(() => {
-        res.redirect("/dashboard")
+        res.redirect("/dashboard/students")
       })
       .catch(err => {
-        res.send(err)
+        if (err.name == "SequelizeValidationError") {
+          const error = err.errors.map(e => e.message)
+          res.render("regProfilesError", {error})
+        } else {
+          res.send(err)
+        }
       })
   }
 
@@ -186,24 +280,49 @@ class Controller {
     })
   }
 
+
+  static editProfileGet (req, res) {
+    let username = req.session.username;
+
+    UserProfile.findOne({ where: { username: username } })
+      .then((user) => {
+        res.render("editProfile", { user });
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  }
+
+  static editProfilePost (req, res) {
+    let { name, gender, education, experience } = req.body
+    let username = req.session.username
+
+    UserProfile.findOne({ where: { username: username } })
+      .then((user) => {
+        user.name = name
+        user.gender = gender
+        user.education = education
+        user.experience = experience
+
+        return user.save()
+      })
+      .then(() => {
+        res.redirect("/dashboard/students")
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  }
+
+
+
+
+
+
+
+
+
 }
 
 module.exports = Controller
 
-//berhasil
-// static loginPost (req, res) {
-//   let {username, password} = req.body
-//
-//   User.findOne({ username: username })
-//     .then(user => {
-//       console.log(user)
-//       if (user.password === password) {
-//         res.send('cocok')
-//       } else {
-//         res.send('password salah')
-//       }
-//     })
-//     .catch(err => {
-//       res.send(err);
-//     });
-// }

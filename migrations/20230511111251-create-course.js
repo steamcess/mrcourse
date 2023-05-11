@@ -1,31 +1,24 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  up: function (queryInterface, Sequelize) {
-    return queryInterface.createTable('UserProfiles', {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('Courses', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      courseName: {
         type: Sequelize.STRING
       },
-      gender: {
-        type: Sequelize.STRING
+      description: {
+        type: Sequelize.TEXT
       },
-      education: {
-        type: Sequelize.STRING
+      courseRating: {
+        type: Sequelize.INTEGER
       },
-      experience: {
-        type: Sequelize.STRING
-      },
-      totalCourse: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      username: {
+      teacher: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -38,7 +31,7 @@ module.exports = {
       }
     });
   },
-  down: function (queryInterface, Sequelize) {
-    return  queryInterface.dropTable('UserProfiles');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('Courses');
   }
 };

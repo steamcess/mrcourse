@@ -3,10 +3,13 @@
 <h3>Halaman MENGISI PROFILES</h3>
 <br>
 <br>
-<p>Lanjut ke halaman berikut, bila sudah pernah isi
-<a href="/dashboard"><button>SKIP</button></a> 
-<a href="/editProfile"><button>Update Data Anda</button></a><br><br>
-</p>
+<% if (error) { %>
+    <div class="alert-error">
+        <% error.forEach(function(err) { %>
+            <p><%= err %></p>
+        <% }); %>
+    </div>
+<% } %>
 <form action="/regProfiles" method="post">
 
     <div class="container">

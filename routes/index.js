@@ -51,5 +51,16 @@ router.get("/regProfiles", userLoggedIn, Controller.regProfilesGet)
 router.post("/regProfiles", userLoggedIn, Controller.regProfilesPost)
 
 router.get("/dashboard", userLoggedIn, Controller.dashboard)
+router.get("/courseDetail/:id", userLoggedIn, Controller.courseDetail)
+
+// router.get('/courses', Controller.getCourses)
+router.get('/dashboard/students', userLoggedIn, Controller.dashboardStud)
+router.get('/dashboard/teachers', userLoggedIn, Controller.dashboardTeach)
+router.get('/buy/:CourseId', userLoggedIn, Controller.buy)
+// router.get('/dashboard/students/')
+router.get('/students/courses', userLoggedIn, Controller.studentCourses)
+router.get("/editProfile", userLoggedIn, Controller.editProfileGet)
+router.post("/editProfile", userLoggedIn, Controller.editProfilePost)
+router.get('/delete/:CourseId', userLoggedIn, Controller.delete)
 
 module.exports = router
