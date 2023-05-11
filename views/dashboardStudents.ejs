@@ -18,6 +18,7 @@
             <th>No</th>
             <th>Course Name</th>
             <th>Price</th>
+            <th>Created Date</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -28,6 +29,7 @@
                 <td><%= index + 1 %></td>
                 <td><%= el.courseName %></td>
                 <td><%= changeFormat(el.price)  %></td>
+                <td><%= formatDate(el.createdAt) %></td>
                 <td>
                     <a href="/courseDetail/<%= el.id %>"><button>See Detail Courses</button></a>
                 </td>
