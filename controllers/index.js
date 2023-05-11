@@ -2,6 +2,7 @@ const { SelectedCourse, Course, Category, User, UserProfile } = require("../mode
 const { Op } = require('sequelize') // untuk sort filter
 const bcrypt = require('bcrypt');
 const {changeFormat} = require('../helpers/changeNumberFormat')
+const {formatDate} = require('../helpers/formatDate')
 
 
 class Controller {
@@ -78,7 +79,7 @@ class Controller {
     Course.findAll({where: whereOption})
     .then(courses =>{
         // res.send(courses)
-        res.render("dashboardStudents", {courses, changeFormat})
+        res.render("dashboardStudents", {courses, changeFormat, formatDate})
     })
     .catch(err =>{
         console.log(err)
