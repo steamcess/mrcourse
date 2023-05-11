@@ -1,0 +1,25 @@
+<%- include ("partials/header") -%>
+
+<h3>Halaman LOGIN</h3>
+<br>
+<br>
+<form action="/login" method="post">
+
+    <div class="container">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Username" name="username">
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+
+        <button type="submit">Login</button>
+        <a href="/reg">Belum Punya Akun? Register Dulu</a>
+        <br>
+        <br>
+    </div>
+</form>
+
+<br>
+<br>
+
+<%- include ("partials/footer") -%>

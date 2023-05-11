@@ -1,0 +1,44 @@
+<%- include ("partials/header") -%>
+
+<h3>Catalog Courses</h3>
+<a href="/students/courses"><button>See Your Courses</button></a>
+<a href="/regProfiles"><button style="color:red">ISI DATA ANDA DULU</button>  </a>
+<a href="/editProfile"><button>Update Data Anda</button></a><br><br>
+
+<form action="/dashboard/students">
+    <input type="text" name="courseName">
+    <button type="submit">SEARCH BY COURSE NAME</button>
+</form> <br><br>
+
+<br>
+<br>
+<table border="2">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Course Name</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% courses.forEach((el, index) => { %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td><%= el.courseName %></td>
+                <td><%= changeFormat(el.price)  %></td>
+                <td>
+                    <a href="/courseDetail/<%= el.id %>"><button>See Detail Courses</button></a>
+                </td>
+            </tr>
+        <% }) %>
+       
+    </tbody>
+</table>
+
+
+<br>
+<br>
+
+<%- include ("partials/footer") -%>
