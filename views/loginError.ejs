@@ -1,0 +1,31 @@
+<%- include ("partials/header") -%>
+
+<h3>Halaman LOGIN</h3>
+<br>
+<br>
+<% if (allError) { %>
+    <div class="alert-error">
+        <% allError.forEach(function(err) { %>
+            <p><%= err %></p>
+        <% }); %>
+    </div>
+<% } %>
+<form action="/reg" method="post">
+
+    <div class="container">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Username" name="username">
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+
+        <button type="submit">Register</button>
+        <br>
+        <br>
+    </div>
+</form>
+
+<br>
+<br>
+
+<%- include ("partials/footer") -%>
