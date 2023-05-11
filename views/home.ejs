@@ -1,0 +1,37 @@
+<%- include ("partials/header") -%>
+
+<h3>Catalogue Courses</h3>
+<br>
+<br>
+<table border="2">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Course Name</th>
+            <th>Price</th>
+            <th>Teacher</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% courses.forEach((el, index) => { %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td><%= el.courseName %></td>
+                <td><%= changeFormat(el.price)  %></td>
+                <td><%= el.teacher  %></td>
+                <td>
+                    <a href="/courseDetail/<%= el.id %>"><button>See Detail Courses</button></a>
+                </td>
+            </tr>
+        <% }) %>
+       
+    </tbody>
+</table>
+
+
+<br>
+<br>
+
+<%- include ("partials/footer") -%>
