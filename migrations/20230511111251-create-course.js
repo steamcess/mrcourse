@@ -15,14 +15,11 @@ module.exports = {
       description: {
         type: Sequelize.TEXT
       },
-      duration: {
-        type: Sequelize.INTEGER
-      },
       courseRating: {
         type: Sequelize.INTEGER
       },
-      price: {
-        type: Sequelize.INTEGER
+      teacher: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
