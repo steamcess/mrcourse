@@ -1,0 +1,38 @@
+<%- include ("partials/header") -%>
+
+<h3>Halaman MENGISI PROFILES</h3>
+<br>
+<br>
+<form action="/regProfiles" method="post">
+
+    <div class="container">
+        <label for="name"><b>Name</b></label>
+        <input type="text" placeholder="Name" name="name">
+
+        <label for="gender"><b>Gender</b></label>
+        <select name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+
+        <label for="education"><b>Education</b></label>
+        <select name="education">
+            <option value="S3">S3</option>
+            <option value="S2">S2</option>
+            <option value="S1">S1</option>
+            <option value="SMA">SMA</option>
+        </select>
+
+        <label for="experience"><b>Experience</b></label>
+        <input type="text" placeholder="Experience" name="experience">
+
+        <button type="submit">Submit</button>
+        <br>
+        <br>
+    </div>
+</form>
+
+<br>
+<br>
+
+<%- include ("partials/footer") -%>

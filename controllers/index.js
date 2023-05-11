@@ -1,4 +1,4 @@
-const { User } = require("../models")
+const { User, UserProfile } = require("../models")
 const { Op } = require('sequelize') // untuk sort filter
 const bcrypt = require('bcrypt');
 
@@ -56,10 +56,10 @@ class Controller {
               req.session.username = user.username
 
               console.log('Password matched! COCOK COCOK');
-              res.render("dashboard")
+              res.redirect("/regProfiles")
             } else {
               console.log('Password did not match!');
-              res.redirect("/")
+              res.redirect("/login")
             }
           })
       })
@@ -155,6 +155,25 @@ class Controller {
           });
       });
     });
+  }
+
+  static regProfilesGet (req, res) {
+    console.log(req.session.username, '<<< ini di regProfilesGet')
+    res.render("regProfiles")
+  }
+
+  static regProfilesPost (req, res) {
+    let { name, gender, education, experience } = req.body
+    console.log(req.session.username, '<<< ini di regProfilesPost')
+    let newUserProfiles = { name, gender, education, experience, username: req.session.username }
+
+    UserProfile.create(newUserProfiles)
+      .then(() => {
+        res.redirect("/dashboard")
+      })
+      .catch(err => {
+        res.send(err)
+      })
   }
 
   static logout (req, res) {
