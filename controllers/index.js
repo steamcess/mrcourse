@@ -2,6 +2,7 @@ const { User } = require("../models")
 const { Op } = require('sequelize') // untuk sort filter
 const bcrypt = require('bcrypt');
 
+
 class Controller {
 
   static home (req, res) {
@@ -52,6 +53,8 @@ class Controller {
         bcrypt.compare(plainPassword, hashedPassword)
           .then((result) => {
             if (result) {
+              req.session.username = user.username
+
               console.log('Password matched! COCOK COCOK');
               res.render("dashboard")
             } else {
@@ -124,7 +127,7 @@ class Controller {
   // }
 
   static regPost(req, res) {
-    let { username, password } = req.body;
+    let { username, password, role } = req.body;
 
     bcrypt.genSalt(10, (err, salt) => {
       if (err) {
@@ -136,11 +139,11 @@ class Controller {
           return res.send(err);
         }
 
-        let newUser = { username, password: hashedPassword };
+        let newUser = { username, password: hashedPassword, role };
         console.log(newUser)
         User.create(newUser)
           .then(() => {
-            res.redirect("/dashboard")
+            res.redirect("/login")
           })
           .catch(err => {
             if (err.name == "SequelizeValidationError") {
@@ -154,6 +157,15 @@ class Controller {
     });
   }
 
+  static logout (req, res) {
+    req.session.destroy(err => {
+      if (err) {
+        console.log(err)
+      } else {
+        res.redirect("/login")
+      }
+    })
+  }
 
 }
 
