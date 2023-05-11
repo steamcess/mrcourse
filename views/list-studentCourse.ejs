@@ -1,0 +1,38 @@
+<%- include ("partials/header") -%>
+
+<a href="/dashboard/students"><button>Back</button></a><br><br>
+
+
+<h3>List <%= result.title %> Course</h3>
+<br>
+<br>
+<table border="2">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Course Name</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% result.SelectedCourses.forEach((el, index) => { %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td><%= el.Course.courseName %></td>
+                <td><%= changeFormat(el.Course.price)  %></td>
+                <td>
+                    <a href="/delete/<%= el.Course.id %>"><button>Finish</button></a>
+                </td>
+            </tr>
+        <% }) %>
+       
+    </tbody>
+</table>
+
+
+<br>
+<br>
+
+<%- include ("partials/footer") -%>

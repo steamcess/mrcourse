@@ -1,17 +1,15 @@
-const { urlencoded } = require('body-parser');
 const express = require('express')
+const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
-const router = require('./routes')
+const router = require("./routes/index")
 
+app.set('view engine', 'ejs');
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({extended: true}));
 
-
-app.set("view engine", "ejs");
-app.use(urlencoded({extended:false}))
 app.use(router)
 
-
-
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Berhasil berjalan di port ${port}`)
 })

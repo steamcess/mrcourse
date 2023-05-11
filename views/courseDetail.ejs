@@ -1,0 +1,18 @@
+<%- include ("partials/header") -%>
+
+<a href="/dashboard/students"><button>Back</button></a><br><br>
+<h3>Course Name : <%= course.courseName %></h3>
+
+<br>
+<br>
+<p>Course Description: <%= course.description %></p>
+<p>Instructor: <%= course.teacher %></p>
+<p>Rating : <%= course.courseRating %></p>
+<p>Price : <span style="color:red"><%= changeFormat(course.price) %></span></p>
+<p><a href="/buy/<%= course.id %>"><button>BUY</button></a></p>
+
+
+<br>
+<br>
+
+<%- include ("partials/footer") -%>
